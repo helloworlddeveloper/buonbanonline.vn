@@ -1,0 +1,22 @@
+version: 0.0
+os: linux
+files:
+  - source: /src
+    destination: /home/chonhagiau/dev.chonhagiau.com
+    file_exists_behavior: OVERWRITE
+hooks:
+  BeforeInstall:
+    - location: Scripts/install-httpd.sh
+      timeout: 300
+      runas: root      
+    - location: Scripts/start-httpd.sh
+      timeout: 300
+      runas: root      
+  AfterInstall:
+    - location: Scripts/unzip-site.sh
+      timeout: 300
+      runas: root      
+  ApplicationStop:
+    - location: Scripts/stop-httpd.sh
+      timeout: 300
+      runas: root

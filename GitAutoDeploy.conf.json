@@ -1,0 +1,9 @@
+{
+	"port": 8001, 
+	"repositories": 
+	[{
+		"url": "git@gitlab.com:ch50/ch-nha-giau.git", 
+		"path": "/home/chonhagiau/ch-nha-giau",
+		"deploy": "git pull origin dev && echo deployed {REPOSITORY_NAME_OR_WHATEVER}"
+	}]
+}

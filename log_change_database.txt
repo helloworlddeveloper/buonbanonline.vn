@@ -1,0 +1,78 @@
+27/01/2022
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_history_ghtk_detail(
+  id int(11) NOT NULL AUTO_INCREMENT,
+  order_id int(11) DEFAULT '0',
+  label varchar(100) DEFAULT '0' NOT NULL COMMENT ' Mã đơn hàng',
+  status_id tinyint(2) COMMENT 'Trạng thái đơn',
+  reason_code varchar(100) DEFAULT '0' COMMENT 'Mã lý do cập nhật',
+  reason varchar(100) DEFAULT '0' COMMENT 'Lý do chi tiết cập nhật',
+  time_add int(11) COMMENT 'Ngày tạo',
+  PRIMARY KEY (id)
+) ENGINE=MyISAM";
+
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_history_ghtk(
+  id int(11) NOT NULL AUTO_INCREMENT,
+  order_id int(11) DEFAULT '0',
+  label varchar(100) DEFAULT '0' NOT NULL COMMENT ' Mã đơn hàng',
+  fee double DEFAULT '0' NOT NULL COMMENT 'Phí dịch vụ cuối cùng',
+  insurance_fee double DEFAULT '0' COMMENT 'Phí bảo hiểm',
+  status_id tinyint(2) COMMENT 'Trạng thái đơn',
+  weight double DEFAULT '0' COMMENT 'khối lượng đơn hàng tính theo kilogram',
+  fee_update double DEFAULT '0' COMMENT 'Phí dịch vụ được GHTK cập nhật',
+  pick_money double DEFAULT '0' COMMENT 'Phí thu hộ',
+  time_add int(11) COMMENT 'Ngày tạo',
+  time_edit int(11) DEFAULT '0' COMMENT 'Ngày sửa',
+  doisoat tinyint(2) DEFAULT '0' COMMENT 'Đối soát 0 chưa đối soát, 1 đã đối soát	',
+  PRIMARY KEY (id)
+) ENGINE=MyISAM";
+
+26/01/2022
+INSERT INTO `tms_vi_retails_config` (`id`, `config_name`, `config_value`) VALUES (NULL, 'name_ecng', '');
+INSERT INTO `tms_vi_retails_config` (`id`, `config_name`, `config_value`) VALUES (NULL, 'phone_ecng', '');
+INSERT INTO `tms_vi_retails_config` (`id`, `config_name`, `config_value`) VALUES (NULL, 'email_ecng', '');
+
+25/01/2022
+ALTER TABLE `tms_vi_retails_order_item` ADD `voucher_price` DOUBLE NULL DEFAULT '0' COMMENT 'giá giảm của voucher ' AFTER `discount`; 
+24/01/2022
+"TRUNCATE ` tms_vi_retails_transporters_shop `"?
+ALTER TABLE `tms_vi_retails_voucher_wallet` ADD `status` TINYINT(2) NULL DEFAULT '1' AFTER `time_add`;
+ALTER TABLE `tms_vi_retails_payment` ADD `is_default` SMALLINT(2) NOT NULL DEFAULT '0' AFTER `images_button`;
+21/01/2022
+ALTER TABLE `tms_vi_retails_warehouse` CHANGE `centerlat` `centerlat` DOUBLE NULL;
+ALTER TABLE `tms_vi_retails_warehouse` CHANGE `centerlng` `centerlng` DOUBLE NULL;
+ALTER TABLE `tms_vi_retails_warehouse` CHANGE `centerlng` `maps_mapzoom` DOUBLE NULL;
+
+20/01/2021
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_payment";
+$sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_payment (
+ payment varchar(100) NOT NULL,
+ paymentname varchar(250) NOT NULL,
+ domain varchar(250) NOT NULL,
+ active tinyint(4) NOT NULL default '0',
+ weight int(11) NOT NULL default '0',
+ config text NOT NULL,
+ images_button varchar(250) NOT NULL,
+ PRIMARY KEY (payment)
+) ENGINE=MyISAM";
+
+ALTER TABLE `tms_vi_retails_order` CHANGE `payment_method` `payment_method` VARCHAR(100) NOT NULL COMMENT 'Phương thức thành toán';
+UPDATE `tms_vi_retails_order` SET `payment_method` = 'vnpay' WHERE `payment_method` = '2'
+UPDATE `tms_vi_retails_order` SET `payment_method` = 'momo' WHERE `payment_method` = '1' 
+
+19/01/2021
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_warehouse_transport(
+  id mediumint(8) NOT NULL AUTO_INCREMENT,
+  warehouse_id int(11) DEFAULT '0' COMMENT 'Id kho',
+  transportid_ecng varchar(50) COMMENT 'Id đơn vị vận chuyển trong bảng transport',
+  storeid_transport int(11) COMMENT 'id cửa hàng của các đơn vị vận chuyển',
+  time_add int(11),
+  status tinyint(1)
+  PRIMARY KEY (id)
+) ENGINE=MyISAM";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_warehouse_transport";
+19/01/2022
+ALTER TABLE `tms_vi_retails_voucher_wallet` ADD `status` TINYINT(2) NULL DEFAULT '1' AFTER `time_add`; 
+
+18/01/2021
+INSERT INTO `tms_vi_retails_config` (`id`, `config_name`, `config_value`) VALUES (NULL, 'username_vtpost', '');
+INSERT INTO `tms_vi_retails_config` (`id`, `config_name`, `config_value`) VALUES (NULL, 'password_vtpost', '');
