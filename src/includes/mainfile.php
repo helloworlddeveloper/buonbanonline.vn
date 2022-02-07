@@ -277,14 +277,14 @@ define('NV_SEARCHKEYS_TABLE', NV_PREFIXLANG . '_searchkeys');
 define('NV_REFSTAT_TABLE', NV_PREFIXLANG . '_referer_stats');
 
 	// Create a Redis Instance
-    $redis = new Redis();
+    //$redis = new Redis();
     
     // Try to connect to a redis server
     // In this case within the host machine and the default port of redis
 	
     //$redis->connect('chonhagiau.com',6379);
 	
-	$redis->connect('127.0.0.1', 6379);  
+	//$redis->connect('127.0.0.1', 6379);  
 	
 	//$redis->auth("Pkh1qazxsw2");
 	

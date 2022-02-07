@@ -12,8 +12,22 @@
     die('Stop!!!');
 	define('NV_IS_MOD_RETAILSHOPS', true);
 	
-	require_once NV_ROOTDIR . '/modules/' . $module_file . '/global.functions.php';
 	
+	require_once NV_ROOTDIR . '/modules/' . $module_file . '/global.functions.php';
+	global $global_array_cat;
+	$global_array_cat = [];
+	$sql = 'SELECT id, name, alias, image, other_image, brand, parrent_id FROM ' . $db_config['dbsystem'] . '.' . NV_PREFIXLANG . '_' . $block_config['module'] .'_categories WHERE status = 1  ORDER BY weight ASC';
+	$list = $nv_Cache->db($sql, 'id', $module_name);
+	if (!empty($list)) {
+		foreach ($list as $l) {
+			$global_array_cat[$l['id']] = $l;
+			$global_array_cat[$l['id']]['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $l['alias'];
+			if ($alias_cat_url == $l['alias']) {
+				$catid = $l['id'];
+				$parentid = $l['parentid'];
+			}
+		}
+	}
 	$array_wishlist_id = [];
 	$arr_cat_title = [];
 	$catid = 0;

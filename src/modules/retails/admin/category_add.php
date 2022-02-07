@@ -47,9 +47,9 @@ if ($nv_Request->isset_request('change_status', 'post, get')) {
     }
 	
 	// xóa cache redis danh mục
-	$redis->delete('catalogy_main');
-	$redis->delete('catalogy_main_all_lev');
-	
+	//$redis->delete('catalogy_main');
+	//$redis->delete('catalogy_main_all_lev');
+	//setItem
     $nv_Cache->delMod($module_name);
     include NV_ROOTDIR . '/includes/header.php';
     echo $content;
@@ -101,8 +101,8 @@ if ($nv_Request->isset_request('delete_id', 'get') and $nv_Request->isset_reques
         }
 		
 		// xóa cache redis danh mục
-		$redis->delete('catalogy_main');
-		$redis->delete('catalogy_main_all_lev');
+		//$redis->delete('catalogy_main');
+		//$redis->delete('catalogy_main_all_lev');
 		
         $nv_Cache->delMod($module_name);
         nv_insert_logs(NV_LANG_DATA, $module_name, 'Delete Category', 'ID: ' . $id, $admin_info['userid']);
@@ -242,8 +242,8 @@ if ($nv_Request->isset_request('submit', 'post')) {
         if ($exc) {
 			
 			// xóa cache redis danh mục
-			$redis->delete('catalogy_main');
-			$redis->delete('catalogy_main_all_lev');
+			//$redis->delete('catalogy_main');
+			//$redis->delete('catalogy_main_all_lev');
 			
             $nv_Cache->delMod($module_name);
             if (empty($row['id'])) {

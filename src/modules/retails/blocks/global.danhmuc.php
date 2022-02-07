@@ -190,7 +190,7 @@ if (!nv_function_exists('nvb_home_danhmuc')) {
 	function nvb_home_danhmuc($block_config)
 	{
 		
-		global $nv_Cache, $global_config, $site_mods, $module_info, $module_name, $module_file, $module_data, $lang_global, $catid, $home, $db,$db_config, $redis;
+		global $nv_Cache, $module_array_cat, $global_config, $site_mods, $module_info, $module_name, $module_file, $module_data, $lang_global, $catid, $home, $db,$db_config, $redis;
 		
 		if (file_exists(NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $block_config['module'] . '/global.danhmuc.tpl')) {
 			$block_theme = $global_config['module_theme'];
@@ -209,14 +209,14 @@ if (!nv_function_exists('nvb_home_danhmuc')) {
 		$xtpl->assign('THEME_SITE_HREF', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA);
 		
 		// xử lý lấy tất cả danh mục sản phẩm
-		if(!$redis->exists('catalogy_main_all_lev'))
+/* 		if(!$nv_Cache->exists('catalogy_main_all_lev'))
 		{
 			$catalogys = get_categories_all_lev_block(0, $block_config);
-			$redis->set('catalogy_main_all_lev', json_encode($catalogys));	
-		}
-		$global_categories = json_decode($redis->get('catalogy_main_all_lev'),true);
+			$nv_Cache->set('catalogy_main_all_lev', json_encode($catalogys));	
+		} */
+		//$global_categories = json_decode($nv_Cache->db($block_config['module'],'id'),true);
 		//print_r($global_categories);
-		$html = get_html_catid_all_block($global_categories, 0);
+		$html = get_html_catid_all_block($module_array_cat, 0);
 		$xtpl->assign('html', $html);
 		
 		$xtpl->parse('main');
@@ -225,5 +225,24 @@ if (!nv_function_exists('nvb_home_danhmuc')) {
 }
 
 if (defined('NV_SYSTEM')) {
-	$content = nvb_home_danhmuc($block_config);
+	global $site_mods, $module_name, $global_array_cat, $module_array_cat, $nv_Cache, $db_config;
+    $module = $block_config['module'];
+    if (isset($site_mods[$module])) {
+        if ($module == $module_name) {
+            $module_array_cat = $global_array_cat;
+            unset($module_array_cat[0]);
+        } else {
+            $module_array_cat = array();
+            $sql = 'SELECT id, name, alias, image, other_image, brand, parrent_id FROM ' . $db_config['dbsystem'] . '.' . NV_PREFIXLANG . '_' . $block_config['module'] .'_categories WHERE status = 1  ORDER BY weight ASC';
+            $list = $nv_Cache->db($sql, 'id', $module);
+            if (!empty($list)) {
+                foreach ($list as $l) {
+                    $module_array_cat[$l['catid']] = $l;
+                    $module_array_cat[$l['catid']]['link'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module . "&amp;" . NV_OP_VARIABLE . "=" . $l['alias'];
+                }
+            }
+        }
+        $content = nvb_home_danhmuc($block_config);
+    }
+	
 }
